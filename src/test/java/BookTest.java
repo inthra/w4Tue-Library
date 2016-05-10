@@ -64,11 +64,14 @@ public class BookTest {
   }
 
   @Test
-  public void delete_deleteBook_true() {
-    Book testBook = new Book("Little Prince", 1);
-    testBook.save();
-    testBook.delete();
-    assertEquals(0, Book.all().size());
+  public void delete_deleteAllAuthorsAndBooksAssociations() {
+    Book myBook = new Book("Little Prince", 1);
+    myBook.save();
+    Author myAuthor = new Author("Antoine de", "Saint-Exupery");
+    myAuthor.save();
+    myBook.addAuthor(myAuthor);
+    myBook.delete();
+    assertEquals(0, myAuthor.getBooks().size());
   }
 
   @Test

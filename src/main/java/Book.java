@@ -75,9 +75,14 @@ public class Book {
 
   public void delete() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "DELETE FROM books WHERE id=:id";
-      con.createQuery(sql)
+      String deleteQuery = "DELETE FROM books WHERE id=:id";
+      con.createQuery(deleteQuery)
         .addParameter("id", this.getId())
+        .executeUpdate();
+
+      String joinDeleteQuery = "DELETE FROM authors_books WHERE book_id=:book_id";
+      con.createQuery(joinDeleteQuery)
+        .addParameter("book_id", this.getId())
         .executeUpdate();
     }
   }
