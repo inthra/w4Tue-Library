@@ -1,7 +1,7 @@
 import org.sql2o.*;
 import org.junit.*;
 import static org.junit.Assert.*;
-// import java.util.Arrays;
+import java.util.List;
 
 public class AuthorTest {
 
@@ -72,10 +72,36 @@ public class AuthorTest {
   }
 
   @Test
-  public void delete_deleteAuthor_true() {
-    Author testAuthor = new Author("James", "Joyce");
-    testAuthor.save();
-    testAuthor.delete();
-    assertEquals(0, Author.all().size());
+  public void delete_deleteAllAuthorsAndBooksAssociations() {
+    Author myAuthor = new Author("James", "Joyce");
+    myAuthor.save();
+    Book myBook = new Book("Bigger Prince", 1);
+    myBook.save();
+    myAuthor.addBook(myBook);
+    myAuthor.delete();
+    assertEquals(0, myBook.getAuthors().size());
   }
+
+  @Test
+  public void addBook_addsBookToAuthor_true() {
+    Book myBook = new Book("Little Prince", 1);
+    myBook.save();
+    Author myAuthor = new Author("Antoine de", "Saint-Exupery");
+    myAuthor.save();
+    myAuthor.addBook(myBook);
+    Book savedBook = myAuthor.getBooks().get(0);
+    assertTrue(myBook.equals(savedBook));
+  }
+
+  @Test
+  public void getBooks_returnsAllBooks_List() {
+    Book myBook = new Book("Little Prince", 1);
+    myBook.save();
+    Author myAuthor = new Author("Antoine de", "Saint-Exupery");
+    myAuthor.save();
+    myAuthor.addBook(myBook);
+    List savedBooks = myAuthor.getBooks();
+    assertEquals(1, savedBooks.size());
+  }
+
 }
