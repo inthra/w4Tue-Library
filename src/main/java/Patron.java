@@ -52,6 +52,15 @@ public class Patron {
     }
   }
 
+  //This needs to be finished
+
+  // public List<Book> getBooks() {
+  //   try (Connection con = DB.sql2o.open()) {
+  //     String sql = "SELECT book_id FROM patrons_books WHERE patron_id=:patron_id";
+  //
+  //   }
+  // }
+
   public static Patron find(int id) {
     try (Connection con = DB.sql2o.open()) {
       String sql = "SELECT * FROM patrons WHERE id=:id";
@@ -59,6 +68,17 @@ public class Patron {
         .addParameter("id", id)
         .executeAndFetchFirst(Patron.class);
       return newPatron;
+    }
+  }
+
+  public static Patron findName(String first_name, String last_name) {
+    try (Connection con = DB.sql2o.open()) {
+      String sql = "SELECT * FROM patrons WHERE (first_name = :first_name AND last_name = :last_name)";
+      Patron patron = con.createQuery(sql)
+        .addParameter("first_name", first_name)
+        .addParameter("last_name", last_name)
+        .executeAndFetchFirst(Patron.class);
+      return patron;
     }
   }
 

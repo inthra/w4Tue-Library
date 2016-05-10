@@ -1,13 +1,15 @@
 import org.sql2o.*;
-// import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Book {
   private int id;
   private String title;
+  private int category_id;
 
-  public Book(String title) {
+  public Book(String title, int category_id) {
     this.title = title;
+    this.category_id = category_id;
   }
 
   public int getId() {
@@ -16,6 +18,10 @@ public class Book {
 
   public String getTitle() {
     return title;
+  }
+
+  public int getCategoryId() {
+    return category_id;
   }
 
   public static List<Book> all() {
@@ -75,5 +81,36 @@ public class Book {
         .executeUpdate();
     }
   }
+
+  public void addAuthor(Author author) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "INSERT INTO authors_books (book_id, author_id) VALUES (:book_id, :author_id)";
+      con.createQuery(sql)
+        .addParameter("book_id", this.getId())
+        .addParameter("author_id", author.getId())
+        .executeUpdate();
+    }
+  }
+
+  public List<Author> getAuthors() {
+    try(Connection con = DB.sql2o.open()){
+      String joinQuery = "SELECT author_id FROM authors_books WHERE book_id = :book_id";
+      List<Integer> authorIds = con.createQuery(joinQuery)
+        .addParameter("book_id", this.getId())
+        .executeAndFetch(Integer.class);
+
+      List<Author> authors = new ArrayList<Author>();
+
+      for (Integer authorId : authorIds) {
+        String authorQuery = "SELECT * FROM authors WHERE id = :authorId";
+        Author author = con.createQuery(authorQuery)
+          .addParameter("authorId", authorId)
+          .executeAndFetchFirst(Author.class);
+        authors.add(author);
+      }
+      return authors;
+    }
+  }
+
 
 }

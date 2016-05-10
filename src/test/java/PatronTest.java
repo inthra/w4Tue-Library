@@ -63,6 +63,14 @@ public class PatronTest {
   }
 
   @Test
+  public void find_fidnPatronWithTheInputtedName() {
+    Patron testPatron = new Patron("Perry", "Smith");
+    testPatron.save();
+    Patron savedPatron = Patron.findName(testPatron.getFirstName(), testPatron.getLastName());
+    assertTrue(testPatron.equals(savedPatron));
+  }
+
+  @Test
   public void update_updatePatronName_true() {
     Patron testPatron = new Patron("Perry", "Smith");
     testPatron.save();

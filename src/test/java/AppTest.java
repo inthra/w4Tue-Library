@@ -32,7 +32,18 @@ public class AppTest extends FluentTest {
   Category testCategory = new Category("Cartoon");
   testCategory.save();
   goTo("http://localhost:4567/");
-  assertThat(pageSource()).contains("Cartoo");
- }
+  assertThat(pageSource()).contains("Cartoon");
+  }
+
+  @Test
+  public void patronSignInIsDisplayedTest() {
+  Patron testPatron = new Patron("Perry", "Smith");
+  testPatron.save();
+  goTo("http://localhost:4567/patron");
+  fill("#first_name").with("Perry");
+  fill("#last_name").with("Smith");
+  submit(".btn");
+  assertThat(pageSource()).contains("Perry Smith");
+  }
 
 }
