@@ -1,0 +1,13 @@
+<h1>Library</h1>
+
+<h3>Search Box</h3>
+
+<h3>Categories</h3>
+<ul>
+  #foreach ($category in $categories)
+    <li><a href="/categories/$category.getId()">$category.getName()</a></li>
+  #end
+</ul>
+
+<a href="/librarian">Librarian Section</a>
+<a href="/patron">Patron Section</a>
