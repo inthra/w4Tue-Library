@@ -1,7 +1,7 @@
 import org.sql2o.*;
 import org.junit.*;
 import static org.junit.Assert.*;
-// import java.util.Arrays;
+import java.util.Arrays;
 
 public class CategoryTest {
 
@@ -70,4 +70,21 @@ public class CategoryTest {
     testCategory.delete();
     assertEquals(0, Category.all().size());
   }
+
+  @Test
+  public void getBooks_returnsAllBooks_list() {
+    Category myCategory = new Category("Fiction");
+    myCategory.save();
+
+    Book firstBook = new Book("Little Prince", myCategory.getId());
+
+    firstBook.save();
+    Book secondBook = new Book("Bigger Prince", myCategory.getId());
+    secondBook.save();
+    Book[] books = new Book[] {firstBook, secondBook};
+    // System.out.println(myCategory.getBooks().get(0).getTitle());
+    assertEquals(2, myCategory.getBooks().size());
+    // assertTrue(myCategory.getBooks().containsAll(Arrays.asList(books)));
+  }
+
 }

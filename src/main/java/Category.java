@@ -25,6 +25,15 @@ public class Category {
     }
   }
 
+  public List<Book> getBooks() {
+    String sql = "SELECT * FROM books WHERE category_id=:id";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("id", this.id)
+        .executeAndFetch(Book.class);
+    }
+  }
+
   @Override
   public boolean equals(Object otherCategory) {
     if (!(otherCategory instanceof Category)) {

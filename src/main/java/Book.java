@@ -43,9 +43,10 @@ public class Book {
 
   public void save() {
     try (Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO books (title) VALUES (:title)";
+      String sql = "INSERT INTO books (title, category_id) VALUES (:title, :category_id)";
       this.id = (int) con.createQuery(sql, true)
         .addParameter("title", this.title)
+        .addParameter("category_id", this.category_id)
         .executeUpdate()
         .getKey();
     }

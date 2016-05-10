@@ -15,6 +15,15 @@ public class BookTest {
   }
 
   @Test
+  public void BookTest_instantiatesWithCategory_true() {
+    Category myCategory = new Category("Fiction");
+    myCategory.save();
+    Book testBook = new Book("Little Prince", myCategory.getId());
+    testBook.save();
+    assertEquals(myCategory.getId(), testBook.getCategoryId());
+  }
+
+  @Test
   public void getTitle_returnsName_string() {
     Book testBook = new Book("Little Prince", 1);
     assertEquals("Little Prince", testBook.getTitle());
